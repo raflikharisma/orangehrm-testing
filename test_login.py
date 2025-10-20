@@ -16,7 +16,6 @@ class LoginTest(unittest.TestCase):
         self.driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
 
     def test_element_present(self):
-        # Cek elemen-elemen penting di halaman login
         branding = self.wait.until(
             EC.presence_of_element_located((By.CLASS_NAME, "orangehrm-login-branding"))
         )
@@ -30,7 +29,7 @@ class LoginTest(unittest.TestCase):
             EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
         )
 
-        # Assertions biar kriteria PASS/FAIL jelas
+      
         self.assertTrue(branding.is_displayed())
         self.assertTrue(username.is_displayed())
         self.assertTrue(password.is_displayed())
@@ -38,12 +37,20 @@ class LoginTest(unittest.TestCase):
         
     def test_valid_login(self):
         self.wait.until(EC.presence_of_element_located((By.NAME, "username"))).send_keys("Admin")
-        self.driver.find_element(By.NAME, "password").send_keys("admin123")
-        self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+        self.wait.until(EC.presence_of_element_located((By.NAME, "password"))).send_keys("admin123")
+        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
         self.wait.until(EC.presence_of_element_located((By.XPATH, "//h6[text()='Dashboard']")))
         self.assertIn("dashboard", self.driver.current_url.lower())
 
-
+    def test_invalid_login(self):
+        self.wait.until(EC.presence_of_element_located((By.NAME, "username"))).send_keys("testingInvalid123")
+        self.wait.until(EC.presence_of_element_located((By.NAME, "password"))).send_keys("testingInvalid123")
+        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
+        error_msg = self.wait.until(EC.presence_of_element_located((By.XPATH, "//p[contains(@class, 'oxd-alert-content-text')]")))
+        self.assertIn("Invalid credentials", error_msg.text)
+        
+    def test_empty_login(self):
+        self.wait.until.EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
