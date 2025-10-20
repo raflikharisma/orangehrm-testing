@@ -6,11 +6,11 @@ class LoginPage(BasePage):
     URL = BASE_URL
     USERNAME_INPUT = (By.NAME, "username")
     PASSWORD_INPUT = (By.NAME, "password")
-    SUBMIT = (By.XPATH, "//button[@type='submit]")
-    DASHBOARD = (By.XPATH, "//h6[text()='Dashboard]")
-    ERROR_TXT =(By.XPATH, "//p[contains(@class,'oxd-alert-content-text')]")
+    SUBMIT = (By.XPATH, "//button[@type='submit']")
+    DASHBOARD = (By.XPATH, "//h6[text()='Dashboard']")
+    ERROR_TEXT = (By.XPATH, "//p[contains(@class,'oxd-alert-content-text')]")
     REQUIRED = (By.XPATH, "//span[text()='Required']")
-    
+
     def __init__(self, driver):
         super().__init__(driver, DEFAULT_TIMEOUT)
         
